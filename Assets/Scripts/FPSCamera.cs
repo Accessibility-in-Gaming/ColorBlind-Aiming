@@ -9,12 +9,12 @@ public class FPSCamera : MonoBehaviour
     public float mouseSens = 2f;
     float cameraHRot = 0f;
     float cameraVRot = 0f;
-    
-    bool lockedCursor = true;
+    private Camera fpsCam;
 
 
     void Start()
     {
+        fpsCam = GetComponent<Camera>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -22,6 +22,7 @@ public class FPSCamera : MonoBehaviour
 
     void Update()
     {
+        // move camera around
         float inputX = Input.GetAxis("Mouse X") * mouseSens;
         float inputY = Input.GetAxis("Mouse Y") * mouseSens;
 
@@ -33,5 +34,25 @@ public class FPSCamera : MonoBehaviour
         cameraHRot = Mathf.Clamp(cameraHRot, -45f, 45f);
         transform.localEulerAngles += Vector3.up * cameraHRot;
 
+        //recieve shooting input
+        if (Input.GetButtonDown("Fire1")){
+            Shoot();
+        }
+    }
+
+
+    void Shoot(){
+        Vector3 rayOrigin = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(rayOrigin, transform.forward, out hit, 1000f)){
+            
+            // handle the collision
+            TargetPrefab hitTarget = hit.collider.GetComponent<TargetPrefab>();
+
+            if (hitTarget != null){
+                hitTarget.Damage();
+            }
+        }
     }
 }
