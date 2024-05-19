@@ -9,6 +9,9 @@ public class RandomSpawner : MonoBehaviour
     public GameObject targetPrefab;
     private static GameObject target;
 
+    public float XRange = 10f;
+    public float YRange = 10f;
+
     
     private void Awake()
     {
@@ -25,7 +28,7 @@ public class RandomSpawner : MonoBehaviour
     {
         // add a point to the counter
         // move the target to another location
-        Vector3 randomDisplacement = new Vector3(Random.Range(-40f, 40f), Random.Range(-40f, 40f), 0);
+        Vector3 randomDisplacement = new Vector3(Random.Range(-XRange, XRange), Random.Range(-YRange, YRange), 0);
         target.transform.SetLocalPositionAndRotation(transform.position + randomDisplacement, Quaternion.identity);
     }
 }
