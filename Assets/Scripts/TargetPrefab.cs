@@ -5,6 +5,6 @@ using UnityEngine;
 public class TargetPrefab : MonoBehaviour
 {
     public void Damage(){
-
+        RandomSpawner.instance.AddPoint();
     }
 }
