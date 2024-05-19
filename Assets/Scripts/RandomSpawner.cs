@@ -12,6 +12,8 @@ public class RandomSpawner : MonoBehaviour
     public float XRange = 10f;
     public float YRange = 10f;
 
+    private int pointCounter = 0;
+
     
     private void Awake()
     {
@@ -27,8 +29,18 @@ public class RandomSpawner : MonoBehaviour
     public void AddPoint()
     {
         // add a point to the counter
-        // move the target to another location
-        Vector3 randomDisplacement = new Vector3(Random.Range(-XRange, XRange), Random.Range(-YRange, YRange), 0);
-        target.transform.SetLocalPositionAndRotation(transform.position + randomDisplacement, Quaternion.identity);
+        pointCounter += 1;
+
+        if (pointCounter < 10){
+
+            // move the target to another location
+            Vector3 randomDisplacement = new Vector3(Random.Range(-XRange, XRange), Random.Range(-YRange, YRange), 0);
+            target.transform.SetLocalPositionAndRotation(transform.position + randomDisplacement, Quaternion.identity);
+
+        }
+        else {
+            pointCounter = 0;
+            target.transform.SetLocalPositionAndRotation(transform.position, Quaternion.identity);
+        }
     }
 }
