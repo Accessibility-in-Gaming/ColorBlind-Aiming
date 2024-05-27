@@ -10,33 +10,51 @@ public class FPSCamera : MonoBehaviour
     float cameraHRot = 0f;
     float cameraVRot = 0f;
     private Camera fpsCam;
+    private bool followMouse = true;
+
+    public bool FollowMouse{
+        get {return followMouse; }
+        set {
+            followMouse = value;
+            if (followMouse){
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+
+    }
 
 
     void Start()
     {
         fpsCam = GetComponent<Camera>();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        followMouse = true;
     }
  
 
     void Update()
     {
-        // move camera around
-        float inputX = Input.GetAxis("Mouse X") * mouseSens;
-        float inputY = Input.GetAxis("Mouse Y") * mouseSens;
+        // move camera around if followmouse is active
+        if (followMouse){
+            float inputX = Input.GetAxis("Mouse X") * mouseSens;
+            float inputY = Input.GetAxis("Mouse Y") * mouseSens;
 
-        cameraVRot -= inputY;
-        cameraVRot = Mathf.Clamp(cameraVRot, -90f, 90f);
-        transform.localEulerAngles = Vector3.right * cameraVRot;
+            cameraVRot -= inputY;
+            cameraVRot = Mathf.Clamp(cameraVRot, -90f, 90f);
+            transform.localEulerAngles = Vector3.right * cameraVRot;
 
-        cameraHRot += inputX;
-        cameraHRot = Mathf.Clamp(cameraHRot, -45f, 45f);
-        transform.localEulerAngles += Vector3.up * cameraHRot;
+            cameraHRot += inputX;
+            cameraHRot = Mathf.Clamp(cameraHRot, -45f, 45f);
+            transform.localEulerAngles += Vector3.up * cameraHRot;
 
-        //recieve shooting input
-        if (Input.GetButtonDown("Fire1")){
-            Shoot();
+            //recieve shooting input
+            if (Input.GetButtonDown("Fire1")){
+                Shoot();
+            }
         }
     }
 
